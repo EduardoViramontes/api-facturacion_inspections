@@ -1,0 +1,26 @@
+name: Deploy to Server
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy_to_server:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh \
+          && echo "${{ secrets.api_key }}" | tr -d '\r' > ~/.ssh/id_rsa \
+          && chmod 600 ~/.ssh/id_rsa \
+          && ssh-keyscan -H 3.17.161.73 >> ~/.ssh/known_hosts \
+          && ssh-keyscan -H github.com >> ~/.ssh/known_hosts  # Agregar clave de host de GitHub si es necesario
+
+      - name: Deploy to Server
+        run: |
+          ssh -o StrictHostKeyChecking=no ubuntu@3.17.161.73 './scripts/buildApiFacturacion.sh'
