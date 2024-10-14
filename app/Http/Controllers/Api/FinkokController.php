@@ -694,11 +694,11 @@ class FinkokController extends Controller
             $impuestoPagoData = $impuestosPagoData[$i];
             # Se añade el nodo de pago20:TrasladoP
             $trasladoP = $trasladosP->addChild('xmlns:pago20:TrasladoP');
-            $trasladoP->addAttribute('BaseP', $this->formatCurrency(($impuestoPagoData["BaseP"]),$decimales));
+            $trasladoP->addAttribute('BaseP', $this->formatCurrency(($impuestoPagoData["BaseP"]),$decimalesTotales));
             $trasladoP->addAttribute('ImpuestoP', $impuestoPagoData['ImpuestoP']);
             $trasladoP->addAttribute('TipoFactorP', $impuestoPagoData['TipoFactorP']);
             $trasladoP->addAttribute('TasaOCuotaP', $impuestoPagoData['TasaOCuotaP']);
-            $trasladoP->addAttribute('ImporteP', $this->formatCurrency(($impuestoPagoData["ImporteP"]),$decimales));
+            $trasladoP->addAttribute('ImporteP', $this->formatCurrency(($impuestoPagoData["ImporteP"]),$decimalesTotales));
         }
         $this->isCFDI = true;
         return $xml;
@@ -842,11 +842,11 @@ class FinkokController extends Controller
                 $impuestoPagoData = $impuestosPagoData[$i];
                 # Se añade el nodo de pago20:TrasladoP
                 $trasladoP = $trasladosP->addChild('xmlns:pago20:TrasladoP');
-                $trasladoP->addAttribute('BaseP', $this->formatCurrency(($impuestoPagoData["BaseP"]),$decimales));
+                $trasladoP->addAttribute('BaseP', $this->formatCurrency(($impuestoPagoData["BaseP"]),$decimalesTotales));
                 $trasladoP->addAttribute('ImpuestoP', $impuestoPagoData['ImpuestoP']);
                 $trasladoP->addAttribute('TipoFactorP', $impuestoPagoData['TipoFactorP']);
                 $trasladoP->addAttribute('TasaOCuotaP', $impuestoPagoData['TasaOCuotaP']);
-                $trasladoP->addAttribute('ImporteP', $this->formatCurrency(($impuestoPagoData["ImporteP"]),$decimales));
+                $trasladoP->addAttribute('ImporteP', $this->formatCurrency(($impuestoPagoData["ImporteP"]),$decimalesTotales));
             }
         }
         $this->isCFDI = true;
@@ -855,7 +855,8 @@ class FinkokController extends Controller
 
     public function formatCurrency($monto, $decimales)
     {
-        return round($monto, $decimales);
+        return number_format($monto, $decimales, '.', '');
+        //return round($monto, $decimales);
     }
 
     private function validarXML($xmlString, $isPago = false){
